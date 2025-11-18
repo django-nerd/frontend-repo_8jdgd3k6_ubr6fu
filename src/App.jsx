@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import Spline from '@splinetool/react-spline'
+import React, { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import TypingReveal from './components/TypingReveal'
 import Embers from './components/Embers'
@@ -8,9 +7,18 @@ import ArrowDown from './components/ArrowDown'
 import ChapterTwo from './components/ChapterTwo'
 import ChapterThree from './components/ChapterThree'
 import ErrorBoundary from './components/ErrorBoundary'
+import SplineScene from './components/SplineScene'
 
 function App() {
   const [typed, setTyped] = useState(false)
+  const disableSpline = useMemo(() => {
+    try {
+      const params = new URLSearchParams(window.location.search)
+      return params.has('nospline')
+    } catch {
+      return false
+    }
+  }, [])
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-black text-white">
@@ -29,12 +37,12 @@ function App() {
           }} />
         </div>
 
-        {/* Spline 3D Cover with safety net */}
-        <ErrorBoundary>
-          <div className="absolute inset-0">
-            <Spline scene="https://prod.spline.design/5iNiBKPngFKgC6zA/scene.splinecode" style={{ width: '100%', height: '100%' }} />
-          </div>
-        </ErrorBoundary>
+        {/* Spline 3D Cover with safety net + lazy load (can be disabled with ?nospline) */}
+        {!disableSpline && (
+          <ErrorBoundary>
+            <SplineScene />
+          </ErrorBoundary>
+        )}
 
         {/* Atmospheric overlays */}
         <Rays />
