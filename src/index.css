@@ -1,3 +1,7 @@
+/* Fallback base styles to avoid invisible content even if Tailwind fails */
+html, body, #root { min-height: 100%; background-color: #000; color: #fff; }
+* { box-sizing: border-box; }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
