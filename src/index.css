@@ -16,6 +16,12 @@
   body { @apply antialiased bg-black; }
 }
 
+/* Typography helpers (temporary until Rome Gekors is provided) */
+@layer components {
+  .font-display { font-family: 'Cinzel', serif; letter-spacing: 0.06em; }
+  .font-serif-body { font-family: 'Cormorant Garamond', serif; }
+}
+
 /* Custom utilities */
 @layer utilities {
   .animate-in { animation-name: animateIn; animation-duration: 350ms; }
