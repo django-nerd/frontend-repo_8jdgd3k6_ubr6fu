@@ -1,70 +1,74 @@
+import React, { useState } from 'react'
+import Spline from '@splinetool/react-spline'
+import { motion } from 'framer-motion'
+import TypingReveal from './components/TypingReveal'
+import Embers from './components/Embers'
+import Rays from './components/Rays'
+import ArrowDown from './components/ArrowDown'
+
 function App() {
+  const [typed, setTyped] = useState(false)
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent_50%)]"></div>
+    <div className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+      {/* Textured abyss background with burgundy/plum gradient and grain */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(88,0,32,0.35),transparent_55%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(64,0,64,0.4),transparent_60%)]"></div>
+        {/* Heavy grain */}
+        <div className="absolute inset-0 opacity-[0.25] mix-blend-overlay" style={{
+          backgroundImage: 'url(https://grainy-gradients.vercel.app/noise.svg)'
+        }} />
+      </div>
 
-      <div className="relative min-h-screen flex items-center justify-center p-8">
-        <div className="max-w-2xl w-full">
-          {/* Header with Flames icon */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center mb-6">
-              <img
-                src="/flame-icon.svg"
-                alt="Flames"
-                className="w-24 h-24 drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]"
-              />
-            </div>
+      {/* Spline 3D Cover */}
+      <div className="absolute inset-0">
+        <Spline scene="https://prod.spline.design/5iNiBKPngFKgC6zA/scene.splinecode" style={{ width: '100%', height: '100%' }} />
+      </div>
 
-            <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">
-              Flames Blue
-            </h1>
+      {/* Atmospheric overlays */}
+      <Rays />
+      <Embers count={55} />
 
-            <p className="text-xl text-blue-200 mb-6">
-              Build applications through conversation
-            </p>
-          </div>
+      {/* Centered typing prompt */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center text-center px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
+          className="max-w-5xl mx-auto"
+        >
+          <TypingReveal
+            text={'Ready to indulge in sin?'}
+            charDelay={90}
+            onComplete={() => setTyped(true)}
+          />
 
-          {/* Instructions */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 shadow-xl mb-6">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                1
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Describe your idea</h3>
-                <p className="text-blue-200/80 text-sm">Use the chat panel on the left to tell the AI what you want to build</p>
-              </div>
-            </div>
+          {/* Subtext glow */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0.85, 1] }}
+            transition={{ duration: 2.6, delay: 0.6 }}
+            className="mt-6 text-sm text-white/70"
+          >
+            <span className="px-3 py-1 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
+              A confession written on dark parchment
+            </span>
+          </motion.div>
+        </motion.div>
+      </div>
 
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                2
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Watch it build</h3>
-                <p className="text-blue-200/80 text-sm">Your app will appear in this preview as the AI generates the code</p>
-              </div>
-            </div>
+      {/* Invite to descend */}
+      <ArrowDown show={typed} />
 
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                3
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Refine and iterate</h3>
-                <p className="text-blue-200/80 text-sm">Continue the conversation to add features and make changes</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="text-center">
-            <p className="text-sm text-blue-300/60">
-              No coding required • Just describe what you want
-            </p>
-          </div>
-        </div>
+      {/* Red sparks flicker layer */}
+      <div className="pointer-events-none absolute inset-0">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(220,20,60,0.2),transparent_60%)]"
+        />
       </div>
     </div>
   )
