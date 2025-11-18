@@ -7,6 +7,7 @@ import Rays from './components/Rays'
 import ArrowDown from './components/ArrowDown'
 import ChapterTwo from './components/ChapterTwo'
 import ChapterThree from './components/ChapterThree'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   const [typed, setTyped] = useState(false)
@@ -28,10 +29,12 @@ function App() {
           }} />
         </div>
 
-        {/* Spline 3D Cover */}
-        <div className="absolute inset-0">
-          <Spline scene="https://prod.spline.design/5iNiBKPngFKgC6zA/scene.splinecode" style={{ width: '100%', height: '100%' }} />
-        </div>
+        {/* Spline 3D Cover with safety net */}
+        <ErrorBoundary>
+          <div className="absolute inset-0">
+            <Spline scene="https://prod.spline.design/5iNiBKPngFKgC6zA/scene.splinecode" style={{ width: '100%', height: '100%' }} />
+          </div>
+        </ErrorBoundary>
 
         {/* Atmospheric overlays */}
         <Rays />
