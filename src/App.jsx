@@ -9,6 +9,22 @@ import ChapterThree from './components/ChapterThree'
 import ErrorBoundary from './components/ErrorBoundary'
 import SplineScene from './components/SplineScene'
 
+function StaticHeroBackdrop() {
+  return (
+    <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(30,4,20,0.8),rgba(0,0,0,0.95))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(110,0,40,0.35),transparent_62%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(60,0,60,0.28),transparent_60%)]" />
+      {/* Subtle vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_60%,rgba(0,0,0,0.6))]" />
+      {/* Heavy grain */}
+      <div className="absolute inset-0 opacity-[0.22] mix-blend-overlay" style={{
+        backgroundImage: 'url(https://grainy-gradients.vercel.app/noise.svg)'
+      }} />
+    </div>
+  )
+}
+
 function App() {
   const [typed, setTyped] = useState(false)
   const disableSpline = useMemo(() => {
@@ -24,32 +40,31 @@ function App() {
     <div className="relative min-h-screen w-full overflow-x-hidden bg-black text-white">
       {/* Screen 1: Updated background mood */}
       <section className="relative h-screen w-full">
-        {/* Textured abyss background with deeper plum + obsidian gradient and vignette */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(30,4,20,0.8),rgba(0,0,0,0.95))]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(110,0,40,0.35),transparent_62%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(60,0,60,0.28),transparent_60%)]" />
-          {/* Subtle vignette */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_60%,rgba(0,0,0,0.6))]" />
-          {/* Heavy grain */}
-          <div className="absolute inset-0 opacity-[0.22] mix-blend-overlay" style={{
-            backgroundImage: 'url(https://grainy-gradients.vercel.app/noise.svg)'
-          }} />
-        </div>
+        {/* Always-on static hero backdrop so the screen never renders pure black */}
+        <StaticHeroBackdrop />
 
-        {/* Spline 3D Cover with safety net + lazy load (can be disabled with ?nospline) */}
-        {!disableSpline && (
-          <ErrorBoundary>
-            <SplineScene />
-          </ErrorBoundary>
+        {/* Spline 3D layer (optional). We keep it behind text layers to avoid covering UI. */}
+        {!disableSpline ? (
+          <div className="absolute inset-0 z-0">
+            <ErrorBoundary>
+              <SplineScene />
+            </ErrorBoundary>
+          </div>
+        ) : (
+          // If spline is disabled, provide a soft placeholder so there's always something visible
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(50,0,30,0.35),transparent_70%)]" />
+          </div>
         )}
 
-        {/* Atmospheric overlays */}
-        <Rays />
-        <Embers count={55} />
+        {/* Atmospheric overlays above background and spline */}
+        <div className="absolute inset-0 z-10">
+          <Rays />
+          <Embers count={55} />
+        </div>
 
         {/* Centered typing prompt */}
-        <div className="relative z-10 h-full flex items-center justify-center text-center px-6">
+        <div className="relative z-20 h-full flex items-center justify-center text-center px-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -77,10 +92,12 @@ function App() {
         </div>
 
         {/* Invite to descend */}
-        <ArrowDown show={typed} targetId="chapter-two" />
+        <div className="relative z-20">
+          <ArrowDown show={typed} targetId="chapter-two" />
+        </div>
 
-        {/* Red sparks flicker layer */}
-        <div className="pointer-events-none absolute inset-0">
+        {/* Red sparks flicker layer (subtle tint above everything) */}
+        <div className="pointer-events-none absolute inset-0 z-10">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: [0.1, 0.3, 0.1] }}

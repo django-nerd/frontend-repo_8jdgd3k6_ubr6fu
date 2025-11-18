@@ -5,7 +5,7 @@ const LazySpline = lazy(() => import('@splinetool/react-spline'))
 
 function SplineFallback() {
   return (
-    <div className="absolute inset-0 z-10 pointer-events-none">
+    <div className="absolute inset-0 z-0 pointer-events-none">
       {/* subtle placeholder so the hero never looks empty */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(50,0,30,0.5),rgba(0,0,0,0.95))]" />
       <div className="absolute inset-0 opacity-[0.18] mix-blend-overlay" style={{ backgroundImage: 'url(https://grainy-gradients.vercel.app/noise.svg)' }} />
@@ -22,7 +22,7 @@ function SplineFallback() {
 export default function SplineScene() {
   return (
     <Suspense fallback={<SplineFallback />}> 
-      <div className="absolute inset-0 pointer-events-none z-10">
+      <div className="absolute inset-0 pointer-events-none z-0">
         <LazySpline scene="https://prod.spline.design/5iNiBKPngFKgC6zA/scene.splinecode" style={{ width: '100%', height: '100%' }} />
       </div>
     </Suspense>
